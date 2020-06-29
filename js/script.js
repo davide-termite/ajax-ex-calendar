@@ -1,26 +1,17 @@
 $(document).ready(function(){
 
-  var display = displayMonth(0)
+  // Richiamo funzione per calcolo giorni del mese
+  $('select').change(function() {
 
-  console.log(display);
-  console.log(display.length);
+    var display = displayMonth(this.value)
+    console.log("Questo è value " + this.value);
 
-  for (var i = 0; i < display.length; i++) {
-    $(".calendar ul").append("<li>"+ display[i] +"</li>");
-  }
+    // Ciclo For per mostrare calendario in HTML
+    for (var i = 0; i < display.length; i++) {
+      $(".calendar ul").append("<li>"+ display[i] +"</li>");
+    }
 
-
-  // $("#current-month").click(function(){
-  //
-  //   var currentMonth = $(this).attr('data-count');
-  //
-  //   // console.log(currentMonth);
-  //   //
-  //   // var display = displayMonth(currentMonth);
-  //   // console.log(display);
-  //
-  // })
-
+  });
 
   // // Richiamo API per giorni festivi
   // $.ajax(
@@ -48,14 +39,17 @@ function displayMonth(monthIndex) {
   // Inserisco mese da input funzione e visualizzo giorni
   var daysInMonth = moment("2018").month(monthIndex).daysInMonth();
 
-  // Aggiusto input funzione per correggere funzione nel moment()
-  var getMonth = monthIndex + 1;
-  var month = moment("2018-"+getMonth);
-
-  // Array con giorni del mese interessato
+  // Array con giorni del mese selezionato
   var monthDays = [];
 
-  // Popolo Array con giorni del mese interessato
+  // Aggiusto input funzione per correggere funzione nel moment()
+  var getMonth = parseInt(addZero(monthIndex)) + 1;
+  // console.log(getMonth);
+
+  var month = moment("2018-"+getMonth);
+  // console.log(month);
+
+  // Popolo Array con giorni del mese selezionato
   for (var i = 1; i <= daysInMonth; i++) {
     var singleDay = month.format(i + " MMMM");
     monthDays.push(singleDay)
@@ -65,12 +59,12 @@ function displayMonth(monthIndex) {
 
 }
 
-// // Funzione aggiunge 0 ai numeri <10
-// // --> number: numero intero
-// // --> return: numero inserito con o senza zero
-// function addZero(number) {
-//   if (number < 10) {
-//     return "0" + number;
-//   }
-//   return number;
-// }
+// Funzione aggiunge 0 ai numeri <10
+// --> number: numero intero
+// --> return: numero inserito con o senza zero
+function addZero(number) {
+  if (number < 10) {
+    return "0" + number;
+  }
+  return number;
+}
