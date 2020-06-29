@@ -9,7 +9,16 @@ $(document).ready(function(){
 
     // Ciclo For per mostrare calendario in HTML
     for (var i = 0; i < display.length; i++) {
-      $(".calendar ul").append("<li>"+ display[i] +"</li>");
+
+      // Correggo value per inserirlo come attributo
+      var getMonth = parseInt(this.value) + 1;
+      var getDay = i + 1;
+
+      // Creo attributo da inserire nell'HTML
+      var dataAttribute = moment("2018-"+getMonth+"-"+getDay).format("YYYY-MM-DD");
+
+      // Appendo ad HTML
+      $(".calendar ul").append("<li data-count=" + dataAttribute + ">" + display[i] +"</li>");
     }
 
   });
@@ -27,7 +36,7 @@ function displayMonth(monthIndex) {
   var monthDays = [];
 
   // Aggiusto input funzione per correggere funzione nel moment()
-  var getMonth = parseInt(addZero(monthIndex)) + 1;
+  var getMonth = addZero(parseInt(monthIndex) + 1);
   // console.log(getMonth);
 
   var month = moment("2018-"+getMonth);
@@ -50,10 +59,11 @@ function findHolidays(monthIndex){
   // Richiamo API per giorni festivi
   $.ajax(
     {
-      url: "https://flynn.boolean.careers/exercises/api/holidays?year=2018&month=0",
+      url: "https://flynn.boolean.careers/exercises/api/holidays?year=2018&month=" + monthIndex,
       method: "GET",
       success: function(data){
-        console.log(data.response)
+        console.log(data.response);
+        console.log(data.response.name);
 
       },
 
