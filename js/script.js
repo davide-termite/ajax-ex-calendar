@@ -1,10 +1,11 @@
 $(document).ready(function(){
 
-  // Richiamo funzione per calcolo giorni del mese
+  // Seleziono mese interessato
   $('select').change(function() {
 
+    // Richiamo funzione per calcolo giorni del mese
     var display = displayMonth(this.value)
-    console.log("Questo è value " + this.value);
+    var holidays = findHolidays(this.value)
 
     // Ciclo For per mostrare calendario in HTML
     for (var i = 0; i < display.length; i++) {
@@ -12,23 +13,6 @@ $(document).ready(function(){
     }
 
   });
-
-  // // Richiamo API per giorni festivi
-  // $.ajax(
-  //   {
-  //     url: "https://flynn.boolean.careers/exercises/api/holidays?year=2018&month=0",
-  //     method: "GET",
-  //     success: function(){
-  //
-  //     },
-  //
-  //     error: function(error){
-  //       aler("C'è stato un errore " + error)
-  //     }
-  //
-  //   }
-  // )
-
 })
 
 // Funzione mostra giorni del mese
@@ -56,7 +40,29 @@ function displayMonth(monthIndex) {
   };
 
   return monthDays;
+}
 
+// Funzione mostra giorni festivi del mese
+// --> monthIndex: numero intero da 0 (Gennaio) a 11(Dicembre)
+// --> return: Array giorni festivi del mese
+function findHolidays(monthIndex){
+
+  // Richiamo API per giorni festivi
+  $.ajax(
+    {
+      url: "https://flynn.boolean.careers/exercises/api/holidays?year=2018&month=0",
+      method: "GET",
+      success: function(data){
+        console.log(data.response)
+
+      },
+
+      error: function(error){
+        aler("C'è stato un errore " + error)
+      }
+
+    }
+  )
 }
 
 // Funzione aggiunge 0 ai numeri <10
